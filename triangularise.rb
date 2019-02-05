@@ -7,34 +7,25 @@ def triangularize(n)
                       #we also just don't want non-real numbers in our
     return nil        #program
   end
-
+#see below for the lines guide
+  
 #line 1
-  #adds our "_" symbols to the array n times
+  #add to the array n*B
+
   n.times do
      the_tri.push("_")
   end
   the_tri.push(" " + "\n")
 
 #line 2
-  #adds our "\" symbol to the array
-  #then adds " " to the array n-1 times
-  #the newline isn't seen here as we use it in each iteration of the next block
+  #S + \f + D + (n-1)S
   the_tri.push("\\")
   (n-1).times do
     the_tri.push(" ")
   end
 
 #lines 3 through n
-  #the first 2 lines are relatively static in calculation, whereas this one needs
-  #a little more calculation to it.
-  #each line from here out begins with a space, so we base the number of spaces
-  #we have to print before and after the \ symbol off of the current line
-  #we're on. This just works because of some math I gone and did.
-  #basically, if each line from here on out is treated as line 1+,
-  #then there's one extra space per line before the \ symbol
-  #therefore, the only remaining symbols afterwards are (n-1-x) symbols
-  #and a |\n to prepare for the next line
-  #I figured this all out on graph paper by drawing out triangles.
+  #P + \f + xS + D + (n-1-x)S; x += 1 until x == n - 1
   if n > 2
     x = 1
     until x == n - 1
@@ -53,12 +44,7 @@ def triangularize(n)
   end
 
 #line n+1
-  #this is the end of our triangle
-  #it's also relatively statically produced, where you simply need one more |
-  #symbol and then n-1 " "s and top it down with a \|. This is very similar to
-  #the way the first 2 lines of any triangle are produced as well.
-  #
-  #incidentally, a size(1) triangle will not look like a triangle.
+  #P + \f + (n-1)S + D + P
   the_tri.push("|\n")
   (n-1).times do
     the_tri.push(" ")
@@ -75,13 +61,35 @@ end
 triangularize(7)
 
 =begin
-output for 7:
-_______
-\      |
- \     |
-  \    |
-   \   |
-    \  |
-     \ |
-      \|
+Size 7 triangle:
+_______         Line 1
+\      |        Line 2
+ \     |        Line 3
+  \    |        Line 3
+   \   |        Line 5
+    \  |        Line 6
+     \ |        Line 7
+      \|        Line 8
+
+
+
+basically:
+for triangle of size n
+S = Spacebar or " "
+B = Underscore or "_"
+D = Backslash or "\"
+P = Pipe or "|"
+\f = newline command
+x = the current line - 2
+
+if you divide the triangle up into n+1 lines, each of which have n + 1\n characters each, it's easier to visualize mentally
+for this example I'll be doing a size 3 triangle.
+=>___     Line 1: add to the array n*B
+=>\  |    Line 2: S + \f + D + (n-1)S 
+=> \ | Lines 3-n: P + \f + xS + D + (n-1-x)S; x += 1 until x == n - 1
+=>  \|  Line n+1: P + \f + (n-1)S + D + P
+  
+any given array in this function is size (n+1)^2, 
+
+
 =end
